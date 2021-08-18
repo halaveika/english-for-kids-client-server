@@ -1,0 +1,563 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "English-for-kids-API",
+        "description": "English-for-kids-CRUD-REST-API",
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        }
+    },
+    "servers": [
+        {
+            "url": "/",
+            "description": "Local Dev, or from Heroku"
+        }
+    ],
+    "tags": [
+        {
+            "name": "Card",
+            "description": "API for CRUD cards in the system"
+        },
+        {
+          "name": "Cards",
+          "description": "API for cards to render on client"
+        },
+        {
+          "name": "Category",
+          "description": "API for CRUD categories in the system"
+        },
+        {
+          "name": "Categories",
+          "description": "API for categories to render on client"
+        },
+        {
+          "name": "Words",
+          "description": "API for render statistic"
+        },
+        {
+          "name": "Word",
+          "description": "API for update statistic"
+        },
+        {
+          "name": "User",
+          "description": "API for user authorisation"
+        }
+        
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": { "/category": {
+      "parameters": [
+      {
+        "name": "number",
+        "in": "query parameters",
+        "required": true,
+        "description": "number of categories to render",
+        "type": "string"
+    }
+    ],
+        "get": {
+            "tags": [
+                "Categories"
+            ],
+            "summary": "Get current number of category",
+            "responses": {
+                "200": {
+                    "description": "OK",
+                    "schema": {
+                        "$ref": "#/definitions/Categories"
+                    }
+                }
+            }
+        },
+        "post": {
+          "tags": [
+              "Category"
+          ],
+          "summary": "Add new category",
+          "parameters": [
+            {
+              "name": "title",
+              "in": "query parameters",
+              "required": true,
+              "description": "title of category to add",
+              "type": "string"
+          }
+          ],
+          "responses": {
+              "200": {
+                  "description": "OK",
+                  "schema": {
+                      "$ref": "#/definitions/Categories"
+                  }
+              },
+              "400": {
+                  "description": "Failed"
+              }
+          }
+      },
+      "put": {
+        "tags": [
+            "Category"
+        ],
+        "summary": "Update new category",
+        "parameters": [
+          {
+            "name": "title",
+            "in": "query parameters",
+            "required": true,
+            "description": "title of category to Update",
+            "type": "string"
+        },
+        {
+          "name": "newTitle",
+          "in": "query parameters",
+          "required": true,
+          "description": "newTitle of category",
+          "type": "string"
+      }
+        ],
+        "responses": {
+            "200": {
+                "description": "OK",
+                "schema": {
+                    "$ref": "#/definitions/Categories"
+                }
+            },
+            "400": {
+                "description": "Failed"
+            }
+        }
+    },
+        "delete": {
+            "tags": [
+                "Category"
+            ],
+            "summary": "Delete category",
+        "parameters": [
+          {
+            "name": "title",
+            "in": "query parameters",
+            "required": true,
+            "description": "title of category to delete",
+            "type": "string"
+        }
+        ],
+            "responses": {
+                "200": {
+                    "description": "OK",
+                    "schema": {
+                        "$ref": "#/definitions/Categories"
+                    }
+                },
+                "400": {
+                    "description": "Failed"
+                }
+            }
+        }
+    },
+    "/stat": {
+        "get": {
+            "tags": [
+                "Words"
+            ],
+            "summary": "Get statistic",
+            "responses": {
+                "200": {
+                    "description": "OK",
+                    "schema": {
+                        "$ref": "#/definitions/Words"
+                    }
+                }
+            }
+        },
+        "delete": {
+            "tags": [
+                "Words"
+            ],
+            "summary": "Reset statistic",
+            "responses": {
+                "200": {
+                    "description": "OK",
+                    "schema": {
+                        "$ref": "#/definitions/Words"
+                    }
+                },
+                "400": {
+                    "description": "Failed"
+                }
+            }
+        },
+        "put": {
+          "tags": [
+              "Word"
+          ],
+          "summary": "update statistic",
+          "requestBody": {
+            "description": "word stat",
+            "required": true,
+            "content": {
+                "application/json": {
+                    "schema": {
+                      "$ref": "#/definitions/Word"
+                  }
+                }
+            }
+        },
+          "responses": {
+              "200": {
+                  "description": "OK",
+                  "schema": {
+                      "$ref": "#/definitions/Words"
+                  }
+              },
+              "404": {
+                  "description": "Failed. Card not found."
+              }
+          }
+      }
+    },
+    "/user": {
+      "get": {
+          "tags": [
+              "User"
+          ],
+          "summary": "Get authorisation",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "required": true,
+            "description": "authorisation token",
+            "type": "string"
+        }
+        ],
+          "responses": {
+              "200": {
+                  "description": "OK",
+                  "schema": {
+                      "$ref": "#/definitions/User"
+                  }
+              }
+          }
+      },
+      "post": {
+          "tags": [
+              "User"
+          ],
+          "summary": "Reset statistic",
+        "parameters": [
+          {
+            "name": "login",
+            "in": "path",
+            "required": true,
+            "description": "authorisation login",
+            "type": "string"
+        },
+        {
+          "name": "password",
+          "in": "path",
+          "required": true,
+          "description": "authorisation password",
+          "type": "string"
+      }
+        ],
+          "responses": {
+              "200": {
+                  "description": "OK",
+                  "schema": {
+                      "$ref": "#/definitions/User"
+                  }
+              },
+              "400": {
+                  "description": "Failed"
+              }
+          }
+      }
+  },
+        "/card": {
+          "parameters": [
+            {
+                "name": "word",
+                "in": "query parameters",
+                "required": true,
+                "description": "word of the card",
+                "type": "string"
+            },
+            {
+              "name": "category",
+              "in": "query parameters",
+              "required": true,
+              "description": "category of the card",
+              "type": "string"
+          },
+          {
+            "name": "number",
+            "in": "query parameters",
+            "required": true,
+            "description": "number of card to render",
+            "type": "string"
+        }
+        ],
+            "get": {
+                "tags": [
+                    "Cards"
+                ],
+                "summary": "Get current number of cards",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Cards"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Card"
+                ],
+                "summary": "Delete card by name",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Cards"
+                        }
+                    },
+                    "400": {
+                        "description": "Failed"
+                    }
+                }
+            }
+        },
+        "/card/upload": {
+            "post": {
+                "tags": [
+                    "Card"
+                ],
+                "summary": "add new card to current category",
+                "requestBody": {
+                  "description": "Card media",
+                  "required": true,
+                  "content": {
+                      "multipart/form-data": {
+                          "schema": {
+                              "type:": "object",
+                              "properties": {
+                                  "word": {
+                                      "type": "string"
+                                  },
+                                  "translation": {
+                                      "type": "string"
+                                  },
+                                  "img": {
+                                      "type": "string",
+                                      "format": "binary"
+                                  },
+                                  "audio": {
+                                      "type": "string",
+                                      "format": "binary"
+                                  },
+                                  "category": {
+                                      "type": "string"
+                                  },
+                                  "number": {
+                                      "type": "string"
+                                  }
+                              }
+                          }
+                      }
+                  }
+              },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Cards"
+                        }
+                    },
+                    "404": {
+                        "description": "Failed. Card not found."
+                    }
+                }
+            },
+            "put": {
+                "summary": "Update card with given word and category",
+                "tags": [
+                    "Card"
+                ],
+                "requestBody":  {
+                  "description": "Card media",
+                  "required": true,
+                  "content": {
+                      "multipart/form-data": {
+                          "schema": {
+                              "type:": "object",
+                              "properties": {
+                                  "word": {
+                                      "type": "string"
+                                  },
+                                  "translation": {
+                                      "type": "string"
+                                  },
+                                  "img": {
+                                      "type": "string",
+                                      "format": "binary"
+                                  },
+                                  "audio": {
+                                      "type": "string",
+                                      "format": "binary"
+                                  },
+                                  "category": {
+                                      "type": "string"
+                                  },
+                                  "number": {
+                                      "type": "string"
+                                  }
+                              }
+                          }
+                      }
+                  }
+              },
+            "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Cards"
+                        }
+                    },
+                    "400": {
+                        "description": "Failed."
+                    },
+                    "404": {
+                        "description": "Failed. Card not found."
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "id": {
+            "properties": {
+                "uuid": {
+                    "type": "string"
+                }
+            }
+        },
+        "Word": {
+          "type": "object",
+          "properties": {
+              "word": {
+                  "type": "string"
+              },
+              "category": {
+                  "type": "string"
+              },
+              "trainCount": {
+                  "type": "number"
+              },
+              "successCount": {
+                  "type": "number"
+              },
+              "failCount": {
+                  "type": "number"
+              },
+              "percentSuccess": {
+                  "type": "number"
+              }
+          }
+      },
+      "Words": {
+        "type": "object",
+        "properties": {
+            "word": {
+                "type": "object",
+                "additionalProperties": {
+                    "$ref": "#/definitions/Word"
+                }
+            }
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+            "token": {
+                "type": "string"
+            },
+            "user": {
+              "type": "objec",
+              "properties": {
+                "id": {
+                    "type": "string"
+                }
+          }
+        }
+      }
+    },
+        "Card": {
+            "type": "object",
+            "properties": {
+                "word": {
+                    "type": "string"
+                },
+                "translation": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "audioSrc": {
+                    "type": "string"
+                },
+                "category": {
+                    "type": "string"
+                },
+                "image_Id": {
+                    "type": "string"
+                },
+                "audioSrc_Id": {
+                    "type": "string"
+                }
+            }
+        },
+        "Cards": {
+          "type": "object",
+          "properties": {
+              "card": {
+                  "type": "object",
+                  "additionalProperties": {
+                      "$ref": "#/definitions/Card"
+                  }
+              }
+          }
+        },"Category": {
+          "type": "object",
+          "properties": {
+              "category": {
+                  "type": "string"
+              },
+              "wordsNumber": {
+                  "type": "number"
+              }
+          }
+      },
+      "Categories": {
+        "type": "object",
+        "properties": {
+            "category": {
+                "type": "object",
+                "additionalProperties": {
+                    "$ref": "#/definitions/Category"
+                }
+            }
+        }
+      }
+    }
+}
